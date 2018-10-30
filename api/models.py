@@ -7,6 +7,8 @@ class Game(models.Model):
   publisher = models.CharField("The Publisher of the game", max_length=50) # TODO publisher must be a model with games list
   rating = models.DecimalField("User rating of the game from 1 to 10", max_digits=3, decimal_places=1)
   genres = models.ManyToManyField('Genre',blank=True)
+  overview = models.TextField("Quick description of the game",max_length=400)
+
   
   class Meta:
     db_table = 'games'

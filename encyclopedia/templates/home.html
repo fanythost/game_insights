@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    {% load static %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Game Encyclopedia</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'bulma/css/bulma.css' %}">
+  </head>
+  <body>
+
+    <section class="hero is-dark is-bold">
+      <!-- Hero body: will stick at the middle -->
+      <div class="hero-body">
+        <div class="container">
+          <h1 class="title">
+            Game Encyclopedia
+          </h1>
+          <h2 class="subtitle">
+            Find the game you are looking for!
+          </h2>
+        </div>
+      </div>
+
+      <!-- Hero footer: will stick at the bottom -->
+      <div class="hero-foot">
+        <nav class="tabs is-boxed is-fullwidth">
+          <div class="container">
+            <ul>
+              <li class="is-active"><a>Overview</a></li>
+              <li><a>Modifiers</a></li>
+              <li><a>Grid</a></li>
+              <li><a>Elements</a></li>
+              <li><a>Components</a></li>
+              <li><a>Layout</a></li>
+            </ul>
+          </div>
+        </nav>
+      </div>
+
+    </section>
+
+    <section class="section">
+      <div class="columns is-multiline is-mobile">
+        {% for game in games %}
+        <div class="column is-one-fifth">
+          <div class="box has-background-light">
+            <h1 class="title">{{game.name}}</h1>
+            
+            <p><label class="label">Franchise:</label>
+              {{game.franchise}}</p><br>
+            <p><label class="label">Publisher:</label>
+              {{game.publisher}}</p><br>
+            <p><label class="label">Overview:</label>
+              {{game.overview}}</p><br>
+            
+            {% if game.rating <= 2 %}
+            <progress class="progress is-danger" style="margin-top:1rem" value="{{game.rating}}" max="10">{{game.rating}}/10</progress>{{game.rating}}/10
+            {% elif game.rating <= 4 and game.rating > 2 %}
+            <progress class="progress is-warning" style="margin-top:1rem" value="{{game.rating}}" max="10">{{game.rating}}/10</progress>{{game.rating}}/10
+            {% elif game.rating <= 6 and game.rating > 4 %}
+            <progress class="progress is-info" style="margin-top:1rem" value="{{game.rating}}" max="10">{{game.rating}}/10</progress>{{game.rating}}/10
+            {% elif game.rating <= 8 and game.rating > 6 %}
+            <progress class="progress is-primary" style="margin-top:1rem" value="{{game.rating}}" max="10">{{game.rating}}/10</progress>{{game.rating}}/10
+            {% elif game.rating <= 10 and game.rating > 8 %}
+            <progress class="progress is-success" style="margin-top:1rem" value="{{game.rating}}" max="10">{{game.rating}}/10</progress>{{game.rating}}/10
+            {% endif %}
+
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </section>
+
+  </body>
+</html>
