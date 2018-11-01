@@ -7,5 +7,10 @@ from api.models import Game, Genre
 class Home(View):
     def get(self, request):
         games = Game.objects.all()
-        return render(request, 'home.html', {'games': games})
+        genres = Genre.objects.all()
+        data = {
+            'games': games,
+            'genres': genres
+        }
+        return render(request, 'home.html', data)
 
