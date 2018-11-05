@@ -8,7 +8,7 @@
     <link rel="stylesheet" type="text/css" href="{% static 'bulma/css/bulma.css' %}">
   </head>
   <body>
-
+    {% csrf_token %}
     <section class="hero is-dark is-bold">
       <!-- Hero body: will stick at the middle -->
       <div class="hero-body">
@@ -57,6 +57,7 @@
       <div id="filters" style="display:inline-block"></div>
 
       <div class="columns is-multiline is-mobile">
+           
         {% for game in games %}
         <div class="column is-3">
           <div class="box has-background-light">
@@ -68,6 +69,11 @@
               {{game.publisher}}</p><br>
             <p><label class="label">Overview:</label>
               {{game.overview}}</p><br>
+            <p><label class="label">Genres:</label>
+              {% for genre in game.genres.all %}
+              <div class="tags has-addons"><span class="tag is-danger">{{genre.name}}</span><a class="tag is-delete"></a></div>
+              {% endfor %}
+            </p><br>
             
             {% if game.rating <= 2 %}
             <progress class="progress is-danger" style="margin-top:1rem" value="{{game.rating}}" max="10">{{game.rating}}/10</progress>{{game.rating}}/10
@@ -86,20 +92,32 @@
         {% endfor %}
       </div>
     </section>
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
     <script>
       let selectedGenres = [];
-      let categoryChange = () => {
-        console.log(document.querySelector("#categories").value);
-        
-        selectedGenres.push({
-          value:document.querySelector("#categories").value,
-          label:document.querySelector("#categories").label
-        })
+      
+      let categoryChange = async() => {
+        let select = document.querySelector("#categories");
+        let csrf = document.querySelector("[name='csrfmiddlewaretoken']").value;
+        selectedGenres.push(select.value);
 
-        document.querySelector("#filters").innerHTML = '';
-        for(item of selectedGenres){
-          document.querySelector("#filters").innerHTML += '<div class="tags has-addons"><span class="tag is-danger">'+item.value+'</span><a class="tag is-delete"></a></div>'
+        var csrftoken = Cookies.get('csrftoken');
+
+        let data = {
+          headers:{"Content-Type":"application/json"}, 
+          body:{genres:selectedGenres, csrfmiddlewaretoken:csrftoken},
+          method: "POST"
         }
+
+        console.log(data);
+
+        let response = await fetch('{% url "home" %}',data);
+        console.log(response);
+
+        // document.querySelector("#filters").innerHTML = '';
+        // for(item of selectedGenres){
+        //   document.querySelector("#filters").innerHTML += '<div class="tags has-addons"><span class="tag is-danger">'+item.text+'</span><a class="tag is-delete"></a></div>'
+        // }
       }
 
     </script>
