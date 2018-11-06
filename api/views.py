@@ -1,6 +1,6 @@
-from rest_framework import viewsets
-from api.serializers import UserSerializer, GroupSerializer, GameSerializer, GenreSerializer
-from api.models import Game, Genre
+from rest_framework import viewsets, generics
+from api.serializers import UserSerializer, GroupSerializer, GameSerializer, GenreSerializer, ReviewSerializer
+from api.models import Game, Genre, Review
 
 
 class GameViewSet(viewsets.ModelViewSet):
@@ -16,4 +16,11 @@ class GenreViewSet(viewsets.ModelViewSet):
   """
   queryset = Genre.objects.all()
   serializer_class = GenreSerializer
+
+class ReviewViewSet(viewsets.ModelViewSet):
+  """
+  API endpoint that allows genres to be viewed or edited.
+  """
+  queryset = Review.objects.all()
+  serializer_class = ReviewSerializer
 

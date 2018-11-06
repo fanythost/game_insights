@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User, Group
 from rest_framework import serializers
-from api.models import Game, Genre
+from api.models import Game, Genre, Review
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
@@ -22,4 +22,10 @@ class GameSerializer(serializers.HyperlinkedModelSerializer):
 class GenreSerializer(serializers.HyperlinkedModelSerializer):
   class Meta:
     model = Genre
-    fields = ('name','games')
+    fields = ('__all__')
+
+class ReviewSerializer(serializers.HyperlinkedModelSerializer):
+  class Meta:
+    
+    model = Review
+    fields = ('of','title','content','game_rating','score','votes')    
